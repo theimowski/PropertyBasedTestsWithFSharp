@@ -10,16 +10,19 @@
 
 ###Plan
 
-1. Introduction
-2. Working example - roman to integer
-3. How to come up with a reasonable test
-4. How we use it in Phoenix
+1. Standard approach
+2. Property based approach
+3. Working example
+4. How to come up with a reasonable test
+5. How we use it in Phoenix
 
 Credits: http://fsharpforfunandprofit.com/
 
 ***
 
-##Introduction
+##Standard approach
+
+###Units tests
 
 --- 
 
@@ -27,9 +30,25 @@ Credits: http://fsharpforfunandprofit.com/
 
 ![Monsters](images/CAPTURE.png)
 
+---
+
+*"Unit tests do not prove that a program runs correctly. 
+Unit tests may at most tell that the program does not fail in specific cases."*
+
+---
+
+##Issues with standard approach
+
+* Gives little confidence
+* *Arrange* (*Fixture*) phase can be overwhelming
+
 ***
 
-##Working example - roman to integer
+##Property based approach
+
+***
+
+##Working example
 
 ***
 
