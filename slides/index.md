@@ -13,7 +13,7 @@
 1. Standard approach
 2. Property based approach
 3. Working example
-4. How to come up with a reasonable test
+4. How to come up with a good test
 5. How we use it in Phoenix
 
 Credits: http://fsharpforfunandprofit.com/
@@ -24,6 +24,10 @@ Credits: http://fsharpforfunandprofit.com/
 
 ###Units tests
 
+---
+
+##Verifying correctness
+
 --- 
 
 *"Unit tests have been compared with shining a flashlight into a dark room in search of a monster. Shine the light into the room and then into all the scary corners. It doesn't mean the room is monster free - just that the monster isn't standing where you've shined your flashlight."*
@@ -32,8 +36,15 @@ Credits: http://fsharpforfunandprofit.com/
 
 ---
 
+    [<Fact>]
+    let ``5 add 3 gives 8``() =
+        let actual = add 5 3
+        Assert.Equal(8, actual)
+
+---
+
 *"Unit tests do not prove that a program runs correctly. 
-Unit tests may at most tell that the program does not fail in specific cases."*
+Unit tests may at most tell that the program does not fail for specific cases."*
 
 ---
 
@@ -52,7 +63,7 @@ Unit tests may at most tell that the program does not fail in specific cases."*
 
 ***
 
-##How to come up with a reasonable test
+##How to come up with a good test
 
 ***
 
