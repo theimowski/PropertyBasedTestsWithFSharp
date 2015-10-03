@@ -86,7 +86,7 @@ Unit tests may at most tell that the program does not fail for specific cases."*
 
         // Assert phase
         Assert.True(result.IsImportantCustomer)
-        
+
 ---
 
 ##Issues with standard approach
@@ -110,5 +110,39 @@ Unit tests may at most tell that the program does not fail for specific cases."*
 ***
 
 ##How we use it in Phoenix
+
+---
+
+##Digital publishing
+
+![pdf](images/pdf.png)
+
+---
+
+##Quark XPress
+
+![qxp](images/QXP2015.png)
+
+---
+
+##Adobe InDesign
+
+![indesign](images/indesign.png)
+
+---
+
+##Quark Stack
+
+* Quark Publishing Platform
+* Quark XML Author
+* **Quark XPress Server**
+
+---
+
+##Quark XPress Server
+
+![qxps](images/qxps.jpg)
+
+###Quark XPress template + Modifier XML = PDF
 
 ***
