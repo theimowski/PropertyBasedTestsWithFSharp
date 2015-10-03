@@ -26,7 +26,7 @@ Credits: http://fsharpforfunandprofit.com/
 
 ---
 
-##Verifying correctness
+##1. Correctness
 
 --- 
 
@@ -48,10 +48,52 @@ Unit tests may at most tell that the program does not fail for specific cases."*
 
 ---
 
-##Issues with standard approach
+##2. Arrange phase
+####(also known as fixture)
 
-* Gives little confidence
-* *Arrange* (*Fixture*) phase can be overwhelming
+---
+
+    [<Fact>]
+    let ``5 add 3 gives 8``() =
+        // Arrange phase
+        let x = 5
+        let y = 3
+
+        // Act phase
+        let actual = add x y
+        
+        // Assert phase
+        Assert.Equal(8, actual)
+
+---
+
+    [<Fact>]
+    let ``customer is important if she has X subscriptions``() =
+        // Arrange phase
+        let inputXml = 
+            """<customer>
+                    <firstName>John</firstName>
+                    <lastName>Doe</lastName>
+                    <email>john.doe@example.com</com>
+                    <subscriptions>
+                        <subscription>
+                            <type>...
+                    ...
+               </customer>
+            """
+        // Act phase
+        let result = classifyCustomer inputXml
+
+        // Assert phase
+        Assert.True(result.IsImportantCustomer)
+        
+---
+
+##Issues with standard approach
+###(unit tests)
+
+1. **Correctness** is not guaranteed
+2. **Arrange** phase can be overwhelming
 
 ***
 
