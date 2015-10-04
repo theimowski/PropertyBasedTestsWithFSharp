@@ -33,7 +33,7 @@ type CustomerClassification =
 let classifyCustomer _ = { IsImportantCustomer = true }
 
 [<Fact>]
-let ``aa``() =
+let ``customer is important if she has X subscriptions``() =
     // Arrange phase
     let inputXml = 
         """<customer>
