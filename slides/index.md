@@ -41,6 +41,19 @@ Credits: http://fsharpforfunandprofit.com/
         let actual = add 5 3
         Assert.Equal(8, actual)
 
+* How could add be implemented?
+
+---
+
+    [<Fact>]
+    let ``isPalindrome returns true for "kajak"``() =
+        let actual = isPalindrome "kajak"
+        Assert.Equal(true, actual)
+
+* How certain are we that the function is correctly implemented?
+* How is null handled?
+* How does it work for input with even count of letters?
+
 ---
 
 *"Unit tests do not prove that a program runs correctly. 
@@ -64,6 +77,7 @@ Unit tests may at most tell that the program does not fail for specific cases."*
         
         // Assert phase
         Assert.Equal(8, actual)
+
 
 ---
 
@@ -89,20 +103,107 @@ Unit tests may at most tell that the program does not fail for specific cases."*
 
 ---
 
+    [<Test>]
+    let ``ignores disabled nuget feed from upstream`` () =
+        // Arrange
+        let upstream = 
+            { NugetConfig.Empty with
+                PackageSources = 
+                    [ "MyGetDuality", ("https://www.myget.org/", None) ]
+                    |> Map.ofList }
+        let next = 
+            // "Config.xml" is a file created for the arrange part
+            NugetConfig.GetConfigNode (FileInfo "Config.xml") 
+            |> Trial.returnOrFail
+        
+        // Act
+        let overridden = NugetConfig.OverrideConfig upstream next
+
+        // Assert
+        overridden
+        |> shouldEqual
+            { PackageSources = 
+                [ "nuget.org", ("https://www.nuget.org/api/v2/",None) ]
+                |> Map.ofList
+              PackageRestoreEnabled = true
+              PackageRestoreAutomatic = true }
+
+---
+
 ##Issues with standard approach
 ###(unit tests)
 
 1. **Correctness** is not guaranteed
 2. **Arrange** phase can be overwhelming
-3.
 
 ***
 
 ##Property based approach
 
+---
+
+##Building blocks
+
+1. Generator
+2. Shrinker
+
+---
+
+##Generator
+
+---
+
+##Shrinker
+
+---
+
+##Property based approach
+###solving issues with unit tests
+
+1. Arbitrary input can detect edge cases - **Correctness**
+2. Much simpler and consistent "Arrange phase" - **Arrange**
+
 ***
 
 ##Working example
+
+---
+
+###Revisited add - initial version
+
+    [<Fact>]
+    let ``5 add 3 gives 8``() =
+        let actual = add 5 3
+        Assert.Equal(8, actual)
+
+---
+
+###Add - parametrized tests
+
+    [<Theory>]
+    [<InlineData(5, 3, 8)>]
+    [<InlineData(2, 2, 4)>]
+    [<InlineData(-4, 9, 5)>]
+    let ``add gives sum of two components``(x, y, expected) =
+        let actual = add x y
+        Assert.Equal(expected, actual)
+
+---
+
+###Add - using AutoFixture library
+
+    [<Theory>]
+    [<AutoData>]
+    let ``add gives sum of two components``(x, y) =
+        let expected = x + y
+        let actual = add x y
+        Assert.Equal(expected, actual)
+
+---
+
+###Add - using Property Based Approach
+
+####Demo
 
 ***
 
@@ -301,18 +402,15 @@ Unit tests may at most tell that the program does not fail for specific cases."*
 
 ---
 
-##Profits
+##Using Property Based Testing for testing XSLT
+###Conclusions so far
 
-1. Arbitrary input can detect edge cases - Correctness
-2. Much simpler and consistent "Arrange phase" - Arrange
-3. Easy to find minimal faulty input - 
-
----
-
-##Drawbacks
-
-1. "Assert phase" is more complex
-2. Error reasoning can get tricky
+* (+) Automatic detection of edge cases
+* (+) Easier to maintain "Arrange" phase - everything is in Generator
+* (+) All tests rely on the same Generator - improves consistency
+* (+) Easy to find minimal faulty input thanks to Shrinker
+* (-) "Assert" phase is slightly more complex
+* (-) Error reasoning can sometimes get tricky
 
 ---
 
