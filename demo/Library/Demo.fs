@@ -3,51 +3,16 @@
 let add x y = 
     x + y
 
-open Xunit
+open FsCheck.Xunit
 
-[<Fact>]
-let ``5 add 3 gives 8``() =
-    let actual = add 5 3
-    Assert.Equal(8, actual)
+[<Property>]
+let ``add is commutative``(x, y) =
+    add x y = add y x
 
-type Amount = decimal
-type Currency = USD | EUR
-type Money = Currency * Amount
-type Salary = Yearly of Money
+[<Property>]
+let ``0 is the identity element of add`` (x) =
+    add x 0 = x
 
-type Customer =
-    { Age : int 
-      Salary : Salary }
-
-[<Fact>]
-let ``rich customer without liabilities ``() =
-    // Arrange phase
-    let customer = 
-        { Age = 55
-          Salary = Yearly (USD, 150000.M) }
-    ()
-
-type CustomerClassification = 
-    { IsImportantCustomer : bool }
-
-let classifyCustomer _ = { IsImportantCustomer = true }
-
-[<Fact>]
-let ``customer is important if she has X subscriptions``() =
-    // Arrange phase
-    let inputXml = 
-        """<customer>
-                <firstName>John</firstName>
-                <lastName>Doe</lastName>
-                <email>john.doe@example.com</com>
-                <subscriptions>
-                    <subscription>
-                        <type>...
-                ...
-           </customer>
-        """
-    // Act phase
-    let result = classifyCustomer inputXml
-
-    // Assert phase
-    Assert.True(result.IsImportantCustomer)
+[<Property>]
+let ``add is associative`` (x, y, z) =
+    add x (add y z) = add (add x y) z
