@@ -59,6 +59,8 @@ Credits: http://fsharpforfunandprofit.com/
 *"Unit tests do not prove that a program runs correctly. 
 Unit tests may at most tell that the program does not fail for specific cases."*
 
+#### *"How many tests are enough?"*
+
 ---
 
 ##2. Arrange phase
@@ -142,6 +144,17 @@ Unit tests may at most tell that the program does not fail for specific cases."*
 
 ---
 
+##Idea
+
+* Don't test for specific cases
+* Think about what **properties** your code should have
+* Test input / fixture is ambiguous - it's generated for a certain **type**
+* We manipulate the generator, and the library makes sure to provide arbitrary instances
+
+http://fsharpforfunandprofit.com/posts/property-based-testing/
+
+---
+
 ##Building blocks
 
 1. Generator
@@ -151,9 +164,18 @@ Unit tests may at most tell that the program does not fail for specific cases."*
 
 ##Generator
 
+* Library comes with predefined generators for primitive types and most basic language structures
+* The mechanism is extensible, i.e. we can create our own generators for certain cases
+* Given a generator and a seed, the library generates random instances of the desired type
+* A single test is repeated multiple times, each time with a slightly "bigger" input
+
 ---
 
 ##Shrinker
+
+* If for some input a test fails, the input is being shrunk
+* If the shrunk input still causes the test to fail, it's being shrunk again
+* Process is repeated until minimal faulty input is found
 
 ---
 
@@ -166,6 +188,8 @@ Unit tests may at most tell that the program does not fail for specific cases."*
 ***
 
 ##Working example
+
+###(a journey to Nirvana)
 
 ---
 
@@ -199,15 +223,66 @@ Unit tests may at most tell that the program does not fail for specific cases."*
         let actual = add x y
         Assert.Equal(expected, actual)
 
+* run only once?
+* what about using the "+" operator?
+
 ---
 
 ###Add - using Property Based Approach
+
+' 1. order doesn't matter - commutative property - przemienność
+' 2. adding 0 to anything always gives the latter - identity property - element zerowy?
+' 3. x + (y + z) = (x + y) + z - associative property - łączność
 
 ####Demo
 
 ***
 
 ##How to come up with a good test
+
+---
+
+##Scott Wlaschin's list
+
+1. "Different paths, same destination"
+2. **"There and back again"**
+3. "Some things never change"
+4. **"The more things change, the more they stay the same"**
+5. "Solve a smaller problem first"
+6. "Hard to prove, easy to verify"
+7. **"The test oracle"**
+
+http://fsharpforfunandprofit.com/posts/property-based-testing-2/
+
+---
+
+## "There and back again"
+
+    [<Property>]
+    let ``parsing a stringified JSON gives original result`` (original: JSON) =
+        let stringified = stringify original
+        let parsed = parse stringified
+        parsed = original
+
+---
+
+## "The more things change, the more they stay the same"
+
+    [<Property>]
+    let ``distinct is idemptotent`` (input: list<'a>) =
+        let firstTurn = distinct input
+        let secondTurn = distinct firstTurn
+        firstTurn = secondTurn
+
+---
+
+## "The test oracle"
+    
+    [<Property>]
+    let ``optimised version really works`` (input) =
+        let optimisedResult = hiperFastConcurrentAlgorithm input
+        let plainResult = simpleButSlowerAlgorithm input
+        plainResult = optimisedResult
 
 ***
 
