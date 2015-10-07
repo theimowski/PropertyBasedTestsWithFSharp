@@ -1,10 +1,8 @@
 ﻿module Demo
-
-let add x y = 
-    x + y
-
 open FsCheck.Xunit
 
+let add x y = x + y
+    
 [<Property>]
 let ``add is commutative``(x, y) =
     add x y = add y x

@@ -18,6 +18,10 @@
 
 Credits: http://fsharpforfunandprofit.com/
 
+' DevDay - Mathias Brandewinder
+' Phoenix knows
+' Issues with UT - we encountered them
+
 ***
 
 ##Standard approach
@@ -117,18 +121,18 @@ Unit tests may at most tell that the program does not fail for specific cases."*
             // "Config.xml" is a file created for the arrange part
             NugetConfig.GetConfigNode (FileInfo "Config.xml") 
             |> Trial.returnOrFail
-        
-        // Act
-        let overridden = NugetConfig.OverrideConfig upstream next
-
-        // Assert
-        overridden
-        |> shouldEqual
+        let expected =
             { PackageSources = 
                 [ "nuget.org", ("https://www.nuget.org/api/v2/",None) ]
                 |> Map.ofList
               PackageRestoreEnabled = true
               PackageRestoreAutomatic = true }
+        
+        // Act
+        let overridden = NugetConfig.OverrideConfig upstream next
+
+        // Assert
+        overridden |> shouldEqual expected
 
 ---
 
@@ -148,7 +152,7 @@ Unit tests may at most tell that the program does not fail for specific cases."*
 
 * Don't test for specific cases
 * Think about what **properties** your code should have
-* Test input / fixture is ambiguous - it's generated for a certain **type**
+* Test input / fixture is indeterministic - but it's always generated for a certain **type**
 * We manipulate the generator, and the library makes sure to provide arbitrary instances
 
 http://fsharpforfunandprofit.com/posts/property-based-testing/
@@ -183,7 +187,7 @@ http://fsharpforfunandprofit.com/posts/property-based-testing/
 ###solving issues with unit tests
 
 1. Arbitrary input can detect edge cases - **Correctness**
-2. Much simpler and consistent "Arrange phase" - **Arrange**
+2. Much simpler and **consistent** test fixture - **Arrange**
 
 ***
 
@@ -239,6 +243,7 @@ http://fsharpforfunandprofit.com/posts/property-based-testing/
 ***
 
 ##How to come up with a good test
+#### applicable to a more complex problem
 
 ---
 
