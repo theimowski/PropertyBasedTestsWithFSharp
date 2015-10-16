@@ -36,7 +36,7 @@ Credits: http://fsharpforfunandprofit.com/
 
 *"Unit tests have been compared with shining a flashlight into a dark room in search of a monster. Shine the light into the room and then into all the scary corners. It doesn't mean the room is monster free - just that the monster isn't standing where you've shined your flashlight."*
 
-![Monsters](images/CAPTURE.png)
+![Monsters](images/Capture.PNG)
 
 ---
 
