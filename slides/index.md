@@ -290,7 +290,7 @@ http://fsharpforfunandprofit.com/posts/property-based-testing-2/
 
 ***
 
-##Using Property Based Testing for testing XSLT
+##Using Property Based Testing in practice
 ###Conclusions so far
 
 * (+) Automatic detection of edge cases
