@@ -1,5 +1,11 @@
+framework: net462
 source https://nuget.org/api/v2
 
 nuget FsReveal
 nuget FAKE
 nuget Suave
+
+
+
+nuget FsCheck.Xunit
+nuget xunit

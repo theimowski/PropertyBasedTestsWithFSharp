@@ -1,4 +1,6 @@
 ﻿module Demo
+open Xunit
+open FsCheck
 open FsCheck.Xunit
 
 let add x y = x + y

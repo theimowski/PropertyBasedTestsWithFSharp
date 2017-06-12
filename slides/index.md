@@ -14,7 +14,6 @@
 2. Property based approach
 3. Working example
 4. How to come up with a good test
-5. How we use it in Phoenix
 
 Credits: http://fsharpforfunandprofit.com/
 
@@ -36,7 +35,7 @@ Credits: http://fsharpforfunandprofit.com/
 
 *"Unit tests have been compared with shining a flashlight into a dark room in search of a monster. Shine the light into the room and then into all the scary corners. It doesn't mean the room is monster free - just that the monster isn't standing where you've shined your flashlight."*
 
-![Monsters](images/Capture.PNG)
+![Monsters](images/capture.png)
 
 ---
 
@@ -193,7 +192,7 @@ http://fsharpforfunandprofit.com/posts/property-based-testing/
 
 ##Working example
 
-###(a journey to Nirvana)
+###(a journey to Property Based Test world)
 
 ---
 
@@ -290,197 +289,6 @@ http://fsharpforfunandprofit.com/posts/property-based-testing-2/
         plainResult = optimisedResult
 
 ***
-
-##How we use it in Phoenix
-
----
-
-##Desktop publishing
-
-![pdf](images/pdf.png)
-
----
-
-##Quark XPress
-
-![qxp](images/QXP2015.png)
-
----
-
-##Adobe InDesign
-
-![indesign](images/indesign.png)
-
----
-
-##Quark Stack
-
-* Quark Publishing Platform
-* Quark XML Author
-* Quark XPress + Quark XPress **Server**
-
----
-
-##Quark XPress Server
-
-![qxps](images/qxps.jpg)
-
-###Quark XPress template + Modifier XML = PDF
-
----
-
-##Desktop publishing
-
-![pdf](images/pdf.png)
-
----
-
-##Desktop publishing automation
-
-![automation](images/factory.png)
-
----
-
-##Modifier XML
-
-    [lang=xml]
-    <LAYOUT>
-        <PAGESEQUENCE MASTERREFERENCE="Main">
-            <STORY>
-                <PARAGRAPH PARASTYLE="m_header_1">
-                    <RICHTEXT>My first publication</RICHTEXT>
-                </PARAGRAPH>
-                <PARAGRAPH PARASTYLE="m_body">
-                    <RICHTEXT>Hello </RICHTEXT>
-                    <RICHTEXT BOLD="TRUE">world!</RICHTEXT>
-                </PARAGRAPH>
-            </STORY>
-        </PAGESEQUENCE>
-    </LAYOUT>
-
----
-
-##Dita XML
-####(or rather Phoenix-Dita XML)
-
-    [lang=xml]
-    <topic>
-        <title>My first publication</title>
-        <body>
-            <p>Hello <b>world!</b></p>
-        </body>
-    </topic>
-
----
-
-##XSLT !!!
-
-![epic](images/epic.jpg)
-
---- 
-
-##XSLT can get as complex ...
-
-![complex_xslt](images/complex_xslt.jpg)
-
----
-
-##... as JavaScript ...
-
-![js_pyramid](images/js_pyramid.jpg)
-
----
-
-###... so it's good to have some tests
-
-![need_tests](images/need_tests.jpg)
-
----
-
-##Generator
-
-    let title = gen {
-        let! contents = contents
-        return XElement("title", contents)
-    }
-
-    let body = gen {
-        let! items = Gen.oneOf [ para; table; chart ] |> Gen.listOf
-        return XElement("body", items)
-    }
-
-    let topic = gen {
-        let! title = title
-        let! body = body
-        return XElement("topic", title, body)
-    }
-
----
-
-##Tests
-
-    let schema = XmlSchema.Parse "Modifier.xsd"
-
-    [<Property>]
-    let ``modifier XML conforms to schema`` (topic: XDocument) =
-        let output = xsltTransform "topic.xslt" topic
-        doesNotThrow (fun () -> schema.Validate output)
-
-* alternative -> schema-aware XSLT processor 
-
----
-
-##Moar tests
-
-    [<Property>]
-    let ``if text node under "b" element then richtext has bold`` (topic) =
-        let output = xsltTransform "topic.xslt" topic
-        let textNodes = topic  |> xpath "//text()"
-        let richtexts = output |> xpath "//RICHTEXT"
-        
-        (textNodes, richtexts)
-        ||> Seq.zip
-        |> Seq.filter (fst >> xpath "ancestor::b")
-        |> Seq.forAll (snd >> xpath "@BOLD = 'TRUE'")
-
----
-
-##Shrinker
-
-    [lang=xml]
-    <topic>
-        <title>My first publication</title>
-        <body>
-            <image href="unicorn.pdf">
-            <p>Hello <b>world!</b></p>
-            <table>
-                <title>table</title>
-                <tbody>
-                    <row>
-                        <entry>aaa</entry>
-                    </row>
-                </tbody>
-            </table>
-        </body>
-    </topic>
-
-####Original input
-
----
-
-##Shrinker
-
-    [lang=xml]
-    <topic>
-        <title/>
-        <body>
-            <p><b>w</b></p>
-        </body>
-    </topic>
-
-####Shrinked input
-
----
 
 ##Using Property Based Testing for testing XSLT
 ###Conclusions so far
