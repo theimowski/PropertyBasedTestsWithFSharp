@@ -5,14 +5,14 @@ open FsCheck.Xunit
 
 let add x y = x + y
     
-[<Property>]
+//[<Property>]
 let ``add is commutative``(x, y) =
     add x y = add y x
 
-[<Property>]
+//[<Property>]
 let ``0 is the identity element of add`` (x) =
     add x 0 = x
 
-[<Property>]
+//[<Property>]
 let ``add is associative`` (x, y, z) =
     add x (add y z) = add (add x y) z

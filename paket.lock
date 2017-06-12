@@ -8,7 +8,7 @@ NUGET
       FsCheck (>= 2.9)
       xunit.extensibility.execution (>= 2.2 < 3.0)
     FSharp.Compiler.Service (2.0.0.6)
-    FSharp.Core (4.2.1)
+    FSharp.Core (4.2.1) - redirects: force
     FSharp.Formatting (2.14.4)
       FSharp.Compiler.Service (2.0.0.6)
       FSharpVSPowerTools.Core (>= 2.3 < 2.4)
@@ -18,6 +18,7 @@ NUGET
       FSharp.Formatting (>= 2.11)
     Suave (2.1)
       FSharp.Core (>= 4.0.0.1)
+    Unquote (3.2)
     xunit (2.2)
       xunit.assert (2.2)
       xunit.core (2.2)

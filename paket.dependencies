@@ -6,6 +6,7 @@ nuget FAKE
 nuget Suave
 
 
-
+nuget FSharp.Core redirects:force
 nuget FsCheck.Xunit
 nuget xunit
+nuget Unquote
